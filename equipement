@@ -1,0 +1,169 @@
+package main
+
+import (
+	"fmt"
+)
+
+type Player struct {
+	Gold      int
+	Inventory []string
+	Class     string
+}
+
+func main() {
+	player := Player{Gold: 100} // Le joueur commence avec 100 pièces d'or
+	chooseClass(&player)
+}
+
+func chooseClass(player *Player) {
+	var choice int
+	fmt.Println("Choisissez votre classe :")
+	fmt.Println("1. Guerrier")
+	fmt.Println("2. Assassin")
+	fmt.Println("3. Voleur")
+	fmt.Println("4. Archer")
+	fmt.Println("5. Mage")
+	fmt.Println("6. Quitter")
+
+	fmt.Scan(&choice)
+
+	switch choice {
+	case 1:
+		player.Class = "Guerrier"
+		equipmentMenu(player)
+	case 2:
+		player.Class = "Assassin"
+		equipmentMenu(player)
+	case 3:
+		player.Class = "Voleur"
+		equipmentMenu(player)
+	case 4:
+		player.Class = "Archer"
+		equipmentMenu(player)
+	case 5:
+		player.Class = "Mage"
+		equipmentMenu(player)
+	case 6:
+		fmt.Println("Quitter le jeu...")
+		return
+	default:
+		fmt.Println("Choix invalide, essayez encore.")
+		chooseClass(player)
+	}
+}
+
+func equipmentMenu(player *Player) {
+	var choice int
+	fmt.Printf("\nMenu de l'équipement pour %s :\n", player.Class)
+
+	switch player.Class {
+	case "Guerrier":
+		fmt.Println("1. Chapeau de l'aventurier (50 pièces d'or)")
+		fmt.Println("2. Tunique de l'aventurier (50 pièces d'or)")
+		fmt.Println("3. Bottes de l'aventurier (50 pièces d'or)")
+	case "Assassin":
+		fmt.Println("1. Dague de l'ombre (50 pièces d'or)")
+		fmt.Println("2. Cape de l'ombre (50 pièces d'or)")
+		fmt.Println("3. Bottes furtives (50 pièces d'or)")
+	case "Voleur":
+		fmt.Println("1. Gants de pickpocket (50 pièces d'or)")
+		fmt.Println("2. Cagoule du brigand (50 pièces d'or)")
+		fmt.Println("3. Chaussures silencieuses (50 pièces d'or)")
+	case "Archer":
+		fmt.Println("1. Arc du chasseur (50 pièces d'or)")
+		fmt.Println("2. Carquois renforcé (50 pièces d'or)")
+		fmt.Println("3. Gants de tir (50 pièces d'or)")
+	case "Mage":
+		fmt.Println("1. Bâton de socier (50 pièces d'or)")
+		fmt.Println("2. Robe de l'enchanteur (50 pièces d'or)")
+		fmt.Println("3. Anneau magique (50 pièces d'or)")
+	}
+
+	fmt.Println("4. Retour")
+
+	fmt.Scan(&choice)
+
+	switch player.Class {
+	case "Guerrier":
+		switch choice {
+		case 1:
+			buyItem(player, "Chapeau de l'aventurier")
+		case 2:
+			buyItem(player, "Tunique de l'aventurier")
+		case 3:
+			buyItem(player, "Bottes de l'aventurier")
+		case 4:
+			chooseClass(player)
+		default:
+			fmt.Println("Choix invalide, essayez encore.")
+			equipmentMenu(player)
+		}
+	case "Assassin":
+		switch choice {
+		case 1:
+			buyItem(player, "Dague de l'ombre")
+		case 2:
+			buyItem(player, "Cape de l'ombre")
+		case 3:
+			buyItem(player, "Bottes furtives")
+		case 4:
+			chooseClass(player)
+		default:
+			fmt.Println("Choix invalide, essayez encore.")
+			equipmentMenu(player)
+		}
+	case "Voleur":
+		switch choice {
+		case 1:
+			buyItem(player, "Gants de pickpocket")
+		case 2:
+			buyItem(player, "Cagoule du brigand")
+		case 3:
+			buyItem(player, "Chaussures silencieuses")
+		case 4:
+			chooseClass(player)
+		default:
+			fmt.Println("Choix invalide, essayez encore.")
+			equipmentMenu(player)
+		}
+	case "Archer":
+		switch choice {
+		case 1:
+			buyItem(player, "Arc du chasseur")
+		case 2:
+			buyItem(player, "Carquois renforcé")
+		case 3:
+			buyItem(player, "Gants de tir")
+		case 4:
+			chooseClass(player)
+		default:
+			fmt.Println("Choix invalide, essayez encore.")
+			equipmentMenu(player)
+		}
+	case "Mage":
+		switch choice {
+		case 1:
+			buyItem(player, "Bâton du sorcier")
+		case 2:
+			buyItem(player, "Robe de l'enchanteur")
+		case 3:
+			buyItem(player, "Anneau magique")
+		case 4:
+			chooseClass(player)
+		default:
+			fmt.Println("Choix invalide, essayez encore.")
+			equipmentMenu(player)
+		}
+	}
+}
+
+func buyItem(player *Player, item string) {
+	if player.Gold >= 50 {
+		player.Gold -= 50
+		player.Inventory = append(player.Inventory, item)
+		fmt.Printf("Vous avez fabriqué : %s ! Il vous reste %d pièces d'or.\n", item, player.Gold)
+	} else {
+		fmt.Println("Vous n'avez pas assez de pièces d'or pour fabriquer cet objet.")
+	}
+	equipmentMenu(player)
+}
