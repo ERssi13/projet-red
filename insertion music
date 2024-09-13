@@ -1,0 +1,56 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/mp3"
+	"github.com/faiface/beep/speaker"
+	"github.com/faiface/beep/wav"
+)
+
+func PlayMusic(filename string) {
+
+	f, err := os.Open(filename)
+	if err != nil {
+		fmt.Println("Erreur lors de l'ouverture du fichier :", err)
+		return
+	}
+	defer f.Close()
+
+	var stream beep.StreamSeekCloser
+	var format beep.Format
+
+	if filename[len(filename)-4:] == ".mp3" {
+		stream, format, err = mp3.Decode(f)
+		if err != nil {
+			fmt.Println("Erreur lors du décodage du fichier MP3 :", err)
+			return
+		}
+	} else if filename[len(filename)-4:] == ".wav" {
+		stream, format, err = wav.Decode(f)
+		if err != nil {
+			fmt.Println("Erreur lors du décodage du fichier WAV :", err)
+			return
+		}
+	} else {
+		fmt.Println("Format de fichier non supporté.")
+		return
+	}
+	defer stream.Close()
+
+	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+
+	done := make(chan bool)
+	speaker.Play(beep.Seq(stream, beep.Callback(func() {
+		done <- true
+	})))
+
+	<-done
+}
+
+func main() {
+	PlayMusic("retro_game_music.mp3")
+}
