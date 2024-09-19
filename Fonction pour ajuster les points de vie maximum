@@ -1,0 +1,19 @@
+// Fonction pour ajuster les PV max en fonction de l'équipement porté
+func updateMaxHealth(character *Character) {
+	baseHealth := 100 // Points de vie de base (à ajuster selon votre jeu)
+	extraHealth := 0
+
+	// Ajouter des points de vie en fonction des équipements
+	if character.Equipments.Head == "Chapeau de l'aventurier" {
+		extraHealth += 10
+	}
+	if character.Equipments.Body == "Tunique de l'aventurier" {
+		extraHealth += 25
+	}
+	if character.Equipments.Feet == "Bottes de l'aventurier" {
+		extraHealth += 15
+	}
+
+	character.MaxHealth = baseHealth + extraHealth
+	fmt.Printf("Les PV max de %s sont maintenant de %d.\n", character.Name, character.MaxHealth)
+}
