@@ -1,0 +1,29 @@
+// Fonction pour équiper un objet
+func equipItem(character *Character, item Item) {
+	switch item.Type {
+	case "Head":
+		if character.Equipments.Head != "" {
+			// Remettre l'équipement précédent dans l'inventaire
+			character.Inventory = append(character.Inventory, Item{Name: character.Equipments.Head, Type: "Head"})
+		}
+		character.Equipments.Head = item.Name
+		fmt.Printf("%s équipe %s sur la tête.\n", character.Name, item.Name)
+	case "Body":
+		if character.Equipments.Body != "" {
+			// Remettre l'équipement précédent dans l'inventaire
+			character.Inventory = append(character.Inventory, Item{Name: character.Equipments.Body, Type: "Body"})
+		}
+		character.Equipments.Body = item.Name
+		fmt.Printf("%s équipe %s sur le corps.\n", character.Name, item.Name)
+	case "Feet":
+		if character.Equipments.Feet != "" {
+			// Remettre l'équipement précédent dans l'inventaire
+			character.Inventory = append(character.Inventory, Item{Name: character.Equipments.Feet, Type: "Feet"})
+		}
+		character.Equipments.Feet = item.Name
+		fmt.Printf("%s équipe %s aux pieds.\n", character.Name, item.Name)
+	}
+
+	// Mettre à jour les points de vie max en fonction des équipements
+	updateMaxHealth(character)
+}
